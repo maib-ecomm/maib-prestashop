@@ -20,27 +20,27 @@
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a004" approved="yes">
         <source>Project ID</source>
         <target state="final">Project ID</target>
-        <note>Line: 189</note>
+        <note>Line: 113</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a005" approved="yes">
         <source>Project ID from maibmerchants.md</source>
         <target state="final">Project ID from maibmerchants.md</target>
-        <note>Line: 190</note>
+        <note>Line: 114</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a006" approved="yes">
         <source>Project Secret</source>
         <target state="final">Project Secret</target>
-        <note>Line: 196</note>
+        <note>Line: 120</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a007" approved="yes">
         <source>Project Secret from maibmerchants.md. It is available after project activation.</source>
         <target state="final">Project Secret from maibmerchants.md. It is available after project activation.</target>
-        <note>Line: 197</note>
+        <note>Line: 121</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a008" approved="yes">
         <source>Signature Key</source>
         <target state="final">Signature Key</target>
-        <note>Line: 203</note>
+        <note>Line: 127</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a009" approved="yes">
         <source>Signature Key for validating notifications на Callback URL. It is available after project activation.</source>
@@ -50,17 +50,17 @@
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a010" approved="yes">
         <source>The "Project ID" field is required.</source>
         <target state="final">The "Project ID" field is required.</target>
-        <note>Line: 68</note>
+        <note>Line: 62</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a011" approved="yes">
         <source>The "Project Secret" field is required.</source>
         <target state="final">The "Project Secret" field is required.</target>
-        <note>Line: 70</note>
+        <note>Line: 64</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a012" approved="yes">
         <source>The "Signature Key" field is required.</source>
         <target state="final">The "Signature Key" field is required.</target>
-        <note>Line: 72</note>
+        <note>Line: 66</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a013" approved="yes">
         <source>Are you sure about removing these details?</source>
@@ -70,112 +70,67 @@
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a014" approved="yes">
         <source>Configuration Maib Merchants</source>
         <target state="final">Configuration maibmerchants.md</target>
-        <note>Line: 183</note>
+        <note>Line: 107</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a015" approved="yes">
         <source>Configuration Order Status</source>
         <target state="final">Configuration Order Status</target>
-        <note>Line: 239</note>
+        <note>Line: 163</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a016" approved="yes">
         <source>Pending payment</source>
         <target state="final">Pending payment</target>
-        <note>Line: 245</note>
+        <note>Line: 169</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a017" approved="yes">
         <source>Completed payment</source>
         <target state="final">Completed payment</target>
-        <note>Line: 255</note>
+        <note>Line: 179</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a018" approved="yes">
         <source>Failed payment</source>
         <target state="final">Failed payment</target>
-        <note>Line: 265</note>
+        <note>Line: 189</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a019" approved="yes">
         <source>Refunded payment</source>
         <target state="final">Refunded payment</target>
-        <note>Line: 275</note>
+        <note>Line: 199</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a020" approved="yes">
         <source>For payment refund, update the order status to the selected status. The funds will be returned to the customer card.</source>
         <target state="final">For payment refund, update the order status to the selected status. The funds will be returned to the customer card.</target>
-        <note>Line: 276</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a021" approved="yes">
-        <source>Title</source>
-        <target state="final">Title</target>
-        <note>Line: 119</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a022" approved="yes">
-        <source>Payment method title that the customer will see during checkout</source>
-        <target state="final">Payment method title that the customer will see during checkout</target>
-        <note>Line: 120</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a023" approved="yes">
-        <source>Status</source>
-        <target state="final">Status</target>
-        <note>Line: 125</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a024" approved="yes">
-        <source>Debug</source>
-        <target state="final">Debug</target>
-        <note>Line: 138</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a025" approved="yes">
-        <source>Record detailed debug info to the log file</source>
-        <target state="final">Record detailed debug info to the log file</target>
-        <note>Line: 139</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a026" approved="yes">
-        <source>Sort Order</source>
-        <target state="final">Sort Order</target>
-        <note>Line: 151</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a027" approved="yes">
-        <source>Geo Zone</source>
-        <target state="final">Geo Zone</target>
-        <note>Line: 157</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a028" approved="yes">
-        <source>Total</source>
-        <target state="final">Total</target>
-        <note>Line: 169</note>
-      </trans-unit>
-      <trans-unit id="04c6b42a04ee0865ef3464ef4b73a029" approved="yes">
-        <source>The total amount of the order for this payment method to become active</source>
-        <target state="final">The total amount of the order for this payment method to become active</target>
-        <note>Line: 170</note>
+        <note>Line: 200</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a030" approved="yes">
         <source>OK URL</source>
         <target state="final">Ok URL</target>
-        <note>Line: 210</note>
+        <note>Line: 134</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a031" approved="yes">
         <source>OK URL Description</source>
         <target state="final">Add this link to the Ok URL field in the maibmerchants Project settings.</target>
-        <note>Line: 211</note>
+        <note>Line: 135</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a032" approved="yes">
         <source>FAIL URL</source>
         <target state="final">Fail URL</target>
-        <note>Line: 217</note>
+        <note>Line: 141</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a033" approved="yes">
         <source>FAIL URL Description</source>
         <target state="final">Add this link to the Fail URL field in the maibmerchants Project settings.</target>
-        <note>Line: 218</note>
+        <note>Line: 142</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a034" approved="yes">
         <source>Callback URL</source>
         <target state="final">Callback URL</target>
-        <note>Line: 224</note>
+        <note>Line: 148</note>
       </trans-unit>
       <trans-unit id="04c6b42a04ee0865ef3464ef4b73a035" approved="yes">
         <source>Callback URL Description</source>
         <target state="final">Add this link to the Callback URL field in the maibmerchants Project settings.</target>
-        <note>Line: 225</note>
+        <note>Line: 149</note>
       </trans-unit>
     </body>
   </file>

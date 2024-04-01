@@ -160,7 +160,7 @@ class Maib extends PaymentModule
         $fields_form_order_status = [
             'form' => [
                 'legend' => [
-                    'title' => $this->trans('Configuration Order Statuss', [], 'Modules.Maib.Admin'),
+                    'title' => $this->trans('Configuration Order Status', [], 'Modules.Maib.Admin'),
                     'icon' => 'icon-shopping-cart',
                 ],
                 'input' => [
