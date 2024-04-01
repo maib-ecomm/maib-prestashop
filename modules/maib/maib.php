@@ -1,5 +1,7 @@
 <?php
 
+use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
+
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -44,7 +46,14 @@ class Maib extends PaymentModule
 
     public function install()
     {
-        return parent::install();
+        if (!parent::install()
+            || !$this->registerHook('displayPaymentReturn')
+            || !$this->registerHook('paymentOptions')
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
     public function uninstall()
@@ -251,5 +260,74 @@ class Maib extends PaymentModule
         $statuses = Db::getInstance()->executeS($query);
 
         return $statuses;
+    }
+
+    public function hookDisplayPaymentReturn($params)
+    {
+        if (!$this->active) {
+            return;
+        }
+
+        $totalToPaid = $params['order']->getOrdersTotalPaid() - $params['order']->getTotalPaid();
+        $this->smarty->assign([
+            'shop_name' => $this->context->shop->name,
+            'total' => $this->context->getCurrentLocale()->formatPrice(
+                $totalToPaid,
+                (new Currency($params['order']->id_currency))->iso_code
+            ),
+            'status' => 'ok',
+            'reference' => $params['order']->reference,
+            'contact_url' => $this->context->link->getPageLink('contact', true),
+        ]);
+
+        return $this->fetch('module:ps_wirepayment/views/templates/hook/payment_return.tpl');
+    }
+
+    public function hookPaymentOptions($params)
+    {
+
+        $newOption = new PaymentOption();
+        $newOption->setModuleName($this->name)
+                ->setCallToActionText($this->trans('Maib', [], 'Modules.Wirepayment.Shop'))
+                ->setAction($this->context->link->getModuleLink($this->name, 'validation', [], true))
+                ->setAdditionalInformation($this->fetch('module:ps_wirepayment/views/templates/hook/ps_wirepayment_intro.tpl'));
+
+        return [
+            $newOption,
+        ];
+    }
+
+    public function getTemplateVarInfos()
+    {
+        $cart = $this->context->cart;
+        $total = sprintf(
+            $this->trans('%1$s (tax incl.)', [], 'Modules.Wirepayment.Shop'),
+            $this->context->getCurrentLocale()->formatPrice($cart->getOrderTotal(true, Cart::BOTH), $this->context->currency->iso_code)
+        );
+
+        $bankwireCustomText = Tools::nl2br(Configuration::get('BANK_WIRE_CUSTOM_TEXT', $this->context->language->id));
+        if (empty($bankwireCustomText)) {
+            $bankwireCustomText = '';
+        }
+
+        return [
+            'total' => $total,
+        ];
+    }
+
+    public function checkCurrency($cart)
+    {
+        $currency_order = new Currency($cart->id_currency);
+        $currencies_module = $this->getCurrency($cart->id_currency);
+
+        if (is_array($currencies_module)) {
+            foreach ($currencies_module as $currency_module) {
+                if ($currency_order->id == $currency_module['id_currency']) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
