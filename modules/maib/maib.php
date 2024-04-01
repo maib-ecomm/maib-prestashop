@@ -60,7 +60,7 @@ class Maib extends PaymentModule
     {
         return (
             parent::uninstall() 
-            && Configuration::deleteByName('Maib')
+            && Configuration::deleteByName('maib')
         );
     }
 
@@ -285,33 +285,13 @@ class Maib extends PaymentModule
 
     public function hookPaymentOptions($params)
     {
-
         $newOption = new PaymentOption();
         $newOption->setModuleName($this->name)
-                ->setCallToActionText($this->trans('Maib', [], 'Modules.Wirepayment.Shop'))
-                ->setAction($this->context->link->getModuleLink($this->name, 'validation', [], true))
-                ->setAdditionalInformation($this->fetch('module:ps_wirepayment/views/templates/hook/ps_wirepayment_intro.tpl'));
+                ->setCallToActionText($this->trans('Maib Payment Gateway Module', [], 'Modules.Maib.Admin'))
+                ->setAction($this->context->link->getModuleLink($this->name, 'validation', [], true));
 
         return [
             $newOption,
-        ];
-    }
-
-    public function getTemplateVarInfos()
-    {
-        $cart = $this->context->cart;
-        $total = sprintf(
-            $this->trans('%1$s (tax incl.)', [], 'Modules.Wirepayment.Shop'),
-            $this->context->getCurrentLocale()->formatPrice($cart->getOrderTotal(true, Cart::BOTH), $this->context->currency->iso_code)
-        );
-
-        $bankwireCustomText = Tools::nl2br(Configuration::get('BANK_WIRE_CUSTOM_TEXT', $this->context->language->id));
-        if (empty($bankwireCustomText)) {
-            $bankwireCustomText = '';
-        }
-
-        return [
-            'total' => $total,
         ];
     }
 
