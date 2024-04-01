@@ -33,12 +33,6 @@ class Maib extends PaymentModule
         $this->confirmUninstall = $this->trans('Are you sure about removing these details?', [], 'Modules.Maib.Admin');
 
         $this->configKeys = [
-            'PAYMENT_MAIB_TITLE',
-            'PAYMENT_MAIB_STATUS',
-            'PAYMENT_MAIB_DEBUG',
-            'PAYMENT_MAIB_SORT_ORDER',
-            'PAYMENT_MAIB_GEO_ZONE_ID',
-            'PAYMENT_MAIB_TOTAL',
             'PAYMENT_MAIB_PROJECT_ID',
             'PAYMENT_MAIB_PROJECT_SECRET',
             'PAYMENT_MAIB_SIGNATURE_KEY',
@@ -107,76 +101,6 @@ class Maib extends PaymentModule
 
     public function renderForm()
     {
-        $fields_form_configuration = [
-            'form' => [
-                'legend' => [
-                    'title' => $this->trans('General settings', [], 'Modules.Maib.Admin'),
-                    'icon' => 'icon-gear',
-                ],
-                'input' => [
-                    [
-                        'type' => 'text',
-                        'label' => $this->trans('Title', [], 'Modules.Maib.Admin'),
-                        'desc' => $this->trans('Payment method title that the customer will see during checkout', [], 'Modules.Maib.Admin'),
-                        'name' => 'PAYMENT_MAIB_TITLE',
-                    ],
-                    [
-                        'type' => 'select',
-                        'label' => $this->trans('Status', [], 'Modules.Maib.Admin'),
-                        'name' => 'PAYMENT_MAIB_STATUS',
-                        'options' => [
-                            'query' => [
-                                ['id_option' => '1', 'name' => 1],
-                                ['id_option' => '0', 'name' => 0],
-                            ],
-                            'id' => 'id_option',
-                            'name' => 'name',
-                        ],
-                    ],
-                    [
-                        'type' => 'checkbox',
-                        'label' => $this->trans('Debug', [], 'Modules.Maib.Admin'),
-                        'desc' => $this->trans('Record detailed debug info to the log file', [], 'Modules.Maib.Admin'),
-                        'name' => 'PAYMENT_MAIB_DEBUG',
-                        'values' => [
-                            'query' => [
-                                ['id' => 'on', 'val' => '1'],
-                            ],
-                            'id' => 'id',
-                            'name' => 'name',
-                        ],
-                    ],
-                    [
-                        'type' => 'text',
-                        'label' => $this->trans('Sort Order', [], 'Modules.Maib.Admin'),
-                        'name' => 'PAYMENT_MAIB_SORT_ORDER',
-                    ],
-                    [
-                        'type' => 'select',
-                        'label' => $this->trans('Geo Zone', [], 'Modules.Maib.Admin'),
-                        'name' => 'PAYMENT_MAIB_GEO_ZONE_ID',
-                        'options' => [
-                            'query' => [
-                                ['id_option' => '1', 'name' => 1],
-                                ['id_option' => '0', 'name' => 0],
-                            ],
-                            'id' => 'id_option',
-                            'name' => 'name',
-                        ],
-                    ],
-                    [
-                        'type' => 'text',
-                        'label' => $this->trans('Total', [], 'Modules.Maib.Admin'),
-                        'desc' => $this->trans('The total amount of the order for this payment method to become active', [], 'Modules.Maib.Admin'),
-                        'name' => 'PAYMENT_MAIB_TOTAL',
-                    ],
-                ],
-                'submit' => [
-                    'title' => $this->trans('Save', [], 'Admin.Actions'),
-                ],
-            ],
-        ];
-
         $fields_form_maib_merchants = [
             'form' => [
                 'legend' => [
@@ -303,7 +227,7 @@ class Maib extends PaymentModule
         $helper->tpl_vars['fields_value']['PAYMENT_MAIB_FAIL_URL'] = 'FAIL URL';
         $helper->tpl_vars['fields_value']['PAYMENT_MAIB_CALLBACK_URL'] = 'CALLBACK URL';
 
-        return $helper->generateForm([$fields_form_configuration, $fields_form_maib_merchants, $fields_form_order_status]);
+        return $helper->generateForm([$fields_form_maib_merchants, $fields_form_order_status]);
     }
 
     public function getConfigFieldsValues()
