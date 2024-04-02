@@ -232,9 +232,9 @@ class Maib extends PaymentModule
             'fields_value' => $this->getConfigFieldsValues(),
         ];
         
-        $helper->tpl_vars['fields_value']['PAYMENT_MAIB_OK_URL'] = 'OK URL';
-        $helper->tpl_vars['fields_value']['PAYMENT_MAIB_FAIL_URL'] = 'FAIL URL';
-        $helper->tpl_vars['fields_value']['PAYMENT_MAIB_CALLBACK_URL'] = 'CALLBACK URL';
+        $helper->tpl_vars['fields_value']['PAYMENT_MAIB_OK_URL'] = $this->context->link->getModuleLink($this->name, 'ok', [], true);
+        $helper->tpl_vars['fields_value']['PAYMENT_MAIB_FAIL_URL'] = $this->context->link->getModuleLink($this->name, 'fail', [], true);
+        $helper->tpl_vars['fields_value']['PAYMENT_MAIB_CALLBACK_URL'] = $this->context->link->getModuleLink($this->name, 'callback', [], true);
 
         return $helper->generateForm([$fields_form_maib_merchants, $fields_form_order_status]);
     }
@@ -260,27 +260,6 @@ class Maib extends PaymentModule
         $statuses = Db::getInstance()->executeS($query);
 
         return $statuses;
-    }
-
-    public function hookDisplayPaymentReturn($params)
-    {
-        if (!$this->active) {
-            return;
-        }
-
-        $totalToPaid = $params['order']->getOrdersTotalPaid() - $params['order']->getTotalPaid();
-        $this->smarty->assign([
-            'shop_name' => $this->context->shop->name,
-            'total' => $this->context->getCurrentLocale()->formatPrice(
-                $totalToPaid,
-                (new Currency($params['order']->id_currency))->iso_code
-            ),
-            'status' => 'ok',
-            'reference' => $params['order']->reference,
-            'contact_url' => $this->context->link->getPageLink('contact', true),
-        ]);
-
-        return $this->fetch('module:ps_wirepayment/views/templates/hook/payment_return.tpl');
     }
 
     public function hookPaymentOptions($params)
