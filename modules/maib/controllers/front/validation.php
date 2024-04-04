@@ -101,7 +101,7 @@ class MaibValidationModuleFrontController extends ModuleFrontController
             // Initiate Direct Payment Request to maib API
             $response = MaibApiRequest::create()->pay(
                 $params,
-                $this->getAccessToken()
+                $this->module->getAccessToken()
             );
 
             if (!isset($response->payId)) {
@@ -145,59 +145,5 @@ class MaibValidationModuleFrontController extends ModuleFrontController
         $order_id = Db::getInstance()->getValue($query);
 
         return $order_id + 1;
-    }
-
-    // Get Access Token
-    public function getAccessToken()
-    {
-        $project_id = Configuration::get("PAYMENT_MAIB_PROJECT_ID");
-        $project_secret = Configuration::get("PAYMENT_MAIB_PROJECT_SECRET");
-        $signature_key = Configuration::get("PAYMENT_MAIB_SIGNATURE_KEY");
-
-        // Check if access token exists in cache and is not expired
-        if (
-            Cache::retrieve("access_token") &&
-            Cache::retrieve("access_token_expires") > time()
-        ) {
-            $access_token = Cache::retrieve("access_token");
-
-            PrestaShopLogger::addLog(
-                'Succesful received Access Token from cache.',
-                1
-            );
-
-            return $access_token;
-        }
-
-        try {
-            // Initiate Get Access Token Request to maib API
-            $response = MaibAuthRequest::create()->generateToken(
-                $project_id,
-                $project_secret
-            );
-
-            PrestaShopLogger::addLog(
-                'Succesful received Access Token from maib API',
-                1
-            );
-
-            $access_token = $response->accessToken;
-
-            // Store the access token and its expiration time in cache
-            Cache::store("access_token", $access_token);
-            Cache::store(
-                "access_token_expires",
-                time() + $response->expiresIn
-            );
-        } catch (Exception $ex) {
-            PrestaShopLogger::addLog(
-                'Access token error: ' . $ex->getMessage(),
-                3
-            );
-
-            Tools::redirect('index.php?controller=order&step=1');
-        }
-
-        return $access_token;
     }
 }

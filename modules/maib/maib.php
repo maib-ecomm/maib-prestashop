@@ -1,10 +1,19 @@
 <?php
 
-use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+
+use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
+use MaibEcomm\MaibSdk\MaibApiRequest;
+use MaibEcomm\MaibSdk\MaibAuthRequest;
+
+require_once __DIR__ . "/src/MaibAuthRequest.php";
+require_once __DIR__ . "/src/MaibApiRequest.php";
+require_once __DIR__ . "/src/MaibSdk.php";
+
+class_alias("MaibEcomm\MaibSdk\MaibAuthRequest", "MaibAuthRequest");
+class_alias("MaibEcomm\MaibSdk\MaibApiRequest", "MaibApiRequest");
 
 class Maib extends PaymentModule
 {
@@ -41,14 +50,15 @@ class Maib extends PaymentModule
             'PAYMENT_MAIB_ORDER_PENDING_STATUS_ID',
             'PAYMENT_MAIB_ORDER_SUCCESS_STATUS_ID',
             'PAYMENT_MAIB_ORDER_FAIL_STATUS_ID',
+            'PAYMENT_MAIB_ORDER_REFUND_STATUS_ID',
         ];
     }
 
     public function install()
     {
         if (!parent::install()
-            || !$this->registerHook('displayPaymentReturn')
             || !$this->registerHook('paymentOptions')
+            || !$this->registerHook('actionOrderStatusUpdate')
         ) {
             return false;
         }
@@ -288,5 +298,145 @@ class Maib extends PaymentModule
         }
 
         return false;
+    }
+
+    // Get Access Token
+    public function getAccessToken()
+    {
+        $project_id = Configuration::get("PAYMENT_MAIB_PROJECT_ID");
+        $project_secret = Configuration::get("PAYMENT_MAIB_PROJECT_SECRET");
+        $signature_key = Configuration::get("PAYMENT_MAIB_SIGNATURE_KEY");
+
+        // Check if access token exists in cache and is not expired
+        if (
+            Cache::retrieve("access_token") &&
+            Cache::retrieve("access_token_expires") > time()
+        ) {
+            $access_token = Cache::retrieve("access_token");
+
+            PrestaShopLogger::addLog(
+                'Succesful received Access Token from cache.',
+                1
+            );
+
+            return $access_token;
+        }
+
+        try {
+            // Initiate Get Access Token Request to maib API
+            $response = MaibAuthRequest::create()->generateToken(
+                $project_id,
+                $project_secret
+            );
+
+            PrestaShopLogger::addLog(
+                'Succesful received Access Token from maib API',
+                1
+            );
+
+            $access_token = $response->accessToken;
+
+            // Store the access token and its expiration time in cache
+            Cache::store("access_token", $access_token);
+            Cache::store(
+                "access_token_expires",
+                time() + $response->expiresIn
+            );
+        } catch (Exception $ex) {
+            PrestaShopLogger::addLog(
+                'Access token error: ' . $ex->getMessage(),
+                3
+            );
+
+            Tools::redirect('index.php?controller=order&step=1');
+        }
+
+        return $access_token;
+    }
+
+    public function hookActionOrderStatusUpdate($params)
+    {
+        if (!isset($params['id_order']) || !isset($params['newOrderStatus']) || !isset($params['oldOrderStatus'])) {
+            return;
+        }
+
+        $oldOrderStatusId = $params['oldOrderStatus']->id;
+        $newOrderStatusId = $params['newOrderStatus']->id;
+
+        $orderInfo = new Order($oldOrderStatusId);
+
+        $orderId = $params['id_order'];
+
+        if (!$orderInfo 
+            || $orderInfo->module != $this->name 
+            || $newOrderStatusId != Configuration::get('PAYMENT_MAIB_ORDER_REFUND_STATUS_ID')
+        ) {
+            return;
+        }
+
+        $payId = $this->getTransactionId($orderInfo->reference);
+
+        PrestaShopLogger::addLog(
+            'Initiate Refund Payment Request to maib API, pay_id: ' . $payId . ', order_id: ' . $orderId,
+            1
+        );
+
+        $params = ['payId' => strval($payId)];
+
+        try {
+			// Initiate Refund Payment Request to maib API
+			$response = MaibApiRequest::create()->refund(
+				$params,
+				$this->getAccessToken()
+			);
+
+            PrestaShopLogger::addLog(
+                'Response from refund endpoint: ' . json_encode($response, JSON_PRETTY_PRINT) . ', order_id: ' . $orderId,
+                1
+            );
+
+			if ($response && $response->status === "OK") {
+                PrestaShopLogger::addLog(
+                    'Full refunded payment ' . $payId . ' for order ' . $orderId,
+                    1
+                );
+                
+                $history = new OrderHistory();
+                $history->id_order = (int)$orderId;
+                $history->changeIdOrderState($newOrderStatusId, (int)$orderId);
+                $history->addWithemail();
+			} else if ($response && $response->status === "REVERSED") {
+                PrestaShopLogger::addLog(
+                    'Already refunded payment ' . $payId . ' for order ' . $orderId,
+                    1
+                );
+			} else {
+                PrestaShopLogger::addLog(
+                    'Failed refund payment ' . $payId . ' for order ' . $orderId,
+                    3
+                );
+			}
+		} catch (Exception $e) {
+            PrestaShopLogger::addLog(
+                'Failed refund payment ' . $payId . ' for order ' . $orderId,
+                3
+            );
+		}
+    }
+
+    public function getTransactionId(string $reference)
+    {
+        if ($reference === '') {
+            return;
+        }
+
+        $query = new DbQuery();
+        $query->select('transaction_id');
+        $query->from('order_payment');
+        $query->where('order_reference = "' . $reference . '"');
+
+        $transactionId = Db::getInstance()->getValue($query);
+
+        return $transactionId;
     }
 }
