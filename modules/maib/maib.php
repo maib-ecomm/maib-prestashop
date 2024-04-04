@@ -24,7 +24,7 @@ class Maib extends PaymentModule
         ];
         $this->bootstrap = true;
         $this->author = 'BC Maib SA';
-        $this->controllers = ['payment', 'validation'];
+        $this->controllers = ['validation'];
         $this->is_eu_compatible = 1;
 
         $this->bootstrap = true;

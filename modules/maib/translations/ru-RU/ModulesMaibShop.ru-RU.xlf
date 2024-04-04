@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="modules/maib/controllers/front/ok.php" source-language="en" target-language="ru" datatype="plaintext">
+    <body>
+      <trans-unit id="1f9497d3e8bac9b50151416f04111001" approved="yes">
+        <source>Error no payment</source>
+        <target state="final">Оплата не удалась! Пожалуйста, попробуйте еще раз.</target>
+        <note>Line: 35</note>
+      </trans-unit>
+      <trans-unit id="1f9497d3e8bac9b50151416f04111002" approved="yes">
+        <source>Error no payment</source>
+        <target state="final">Оплата не удалась! Пожалуйста, попробуйте еще раз.</target>
+        <note>Line: 51</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="modules/maib/controllers/front/ok.php" source-language="en" target-language="ru" datatype="plaintext">
+    <body>
+      <trans-unit id="1f9497d3e8bac9b50151416f04113001" approved="yes">
+        <source>Error no payment</source>
+        <target state="final">Оплата не удалась! Пожалуйста, попробуйте еще раз.</target>
+        <note>Line: 28</note>
+      </trans-unit>
+      <trans-unit id="1f9497d3e8bac9b50151416f04111002" approved="yes">
+        <source>Error no payment</source>
+        <target state="final">Оплата не удалась! Пожалуйста, попробуйте еще раз.</target>
+        <note>Line: 49</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="modules/maib/controllers/front/validation.php" source-language="en" target-language="ru" datatype="plaintext">
+    <body>
+      <trans-unit id="1f9497d3e8bac9b50151416f04112001" approved="yes">
+        <source>This payment method is not available.</source>
+        <target state="final">Этот способ оплаты недоступен.</target>
+        <note>Line: 39</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="modules/maib/controllers/front/callback.php" source-language="en" target-language="ru" datatype="plaintext">
+    <body>
+      <trans-unit id="1f9497d3e8bac9b50151416f04114001" approved="yes">
+        <source>Error callback URL</source>
+        <target state="final">Этот Callback URL работает и не должен вызываться напрямую!</target>
+        <note>Line: 15</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
