@@ -8,13 +8,6 @@ use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 use MaibEcomm\MaibSdk\MaibApiRequest;
 use MaibEcomm\MaibSdk\MaibAuthRequest;
 
-require_once __DIR__ . "/src/MaibAuthRequest.php";
-require_once __DIR__ . "/src/MaibApiRequest.php";
-require_once __DIR__ . "/src/MaibSdk.php";
-
-class_alias("MaibEcomm\MaibSdk\MaibAuthRequest", "MaibAuthRequest");
-class_alias("MaibEcomm\MaibSdk\MaibApiRequest", "MaibApiRequest");
-
 class Maib extends PaymentModule
 {
     private $_html = '';
