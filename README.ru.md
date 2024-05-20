@@ -1,7 +1,7 @@
 [![N|Solid](https://www.maib.md/images/logo.svg)](https://www.maib.md)
 
 # Модуль Maib Payment Gateway для Prestashop v. 8.x
-Этот плагин позволяет интегрировать ваш Opencart интернет-магазин с **maib e-commerce API** для приема онлайн-платежей (Visa/Mastercard/Google Pay/Apple Pay).
+Этот плагин позволяет интегрировать ваш Prestashop интернет-магазин с **maib e-commerce API** для приема онлайн-платежей (Visa/Mastercard/Google Pay/Apple Pay).
 
 ## Описание
 Подробнее об этапах интеграции и требованиях к сайту можно узнать [здесь](https://docs.maibmerchants.md/ru/etapy-i-trebovaniya-k-integracii).
