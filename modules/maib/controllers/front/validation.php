@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../../src/MaibApiRequest.php';
+
 use MaibEcomm\MaibSdk\MaibApiRequest;
 
 /**

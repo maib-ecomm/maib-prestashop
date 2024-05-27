@@ -4,6 +4,9 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+require_once __DIR__ . '/src/MaibApiRequest.php';
+require_once __DIR__ . '/src/MaibAuthRequest.php';
+
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 use MaibEcomm\MaibSdk\MaibApiRequest;
 use MaibEcomm\MaibSdk\MaibAuthRequest;

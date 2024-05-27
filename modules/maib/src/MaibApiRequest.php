@@ -10,6 +10,8 @@
  */
 namespace MaibEcomm\MaibSdk;
 
+require_once __DIR__ . '/MaibSdk.php';
+
 use RuntimeException;
 
 class PaymentException extends RuntimeException {}
