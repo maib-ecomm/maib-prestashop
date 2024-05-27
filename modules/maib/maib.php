@@ -4,8 +4,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 use MaibEcomm\MaibSdk\MaibApiRequest;
 use MaibEcomm\MaibSdk\MaibAuthRequest;
