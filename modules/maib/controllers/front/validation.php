@@ -69,6 +69,7 @@ class MaibValidationModuleFrontController extends ModuleFrontController
         $client_name = $customer->firstname . " " . $customer->lastname;
         $email = $customer->email;
         $phone = $customer->getSimpleAddresses($this->context->language->id)[$cart->id_address_delivery]['phone'];
+        $client_ip = $this->getClientIp();
 
         $delivery = (float) number_format($cart->getTotalShippingCost(null, false), 2, ".", "");
 
@@ -77,7 +78,7 @@ class MaibValidationModuleFrontController extends ModuleFrontController
         $params = [
             "amount" => $total,
             "currency" => $currency,
-            "clientIp" => '',
+            "clientIp" => $client_ip,
             "language" => $lang,
             "description" => substr(implode(", ", $description), 0, 124),
             "orderId" => $order_id,
@@ -140,4 +141,25 @@ class MaibValidationModuleFrontController extends ModuleFrontController
 
         return $order_id + 1;
     }
+
+    public function getClientIp()
+    {
+        $ipAddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ipAddress = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ipAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED']) && !empty($_SERVER['HTTP_X_FORWARDED'])) {
+            $ipAddress = $_SERVER['HTTP_X_FORWARDED'];
+        } elseif (isset($_SERVER['HTTP_FORWARDED_FOR']) && !empty($_SERVER['HTTP_FORWARDED_FOR'])) {
+            $ipAddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        } elseif (isset($_SERVER['HTTP_FORWARDED']) && !empty($_SERVER['HTTP_FORWARDED'])) {
+            $ipAddress = $_SERVER['HTTP_FORWARDED'];
+        } elseif (isset($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['REMOTE_ADDR'])) {
+            $ipAddress = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $ipAddress = '127.0.0.1';
+        }
+        return $ipAddress;
+        }
 }
