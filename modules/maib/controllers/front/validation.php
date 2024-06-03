@@ -114,6 +114,11 @@ class MaibValidationModuleFrontController extends ModuleFrontController
 
                 $order_status_id = Configuration::get('PAYMENT_MAIB_ORDER_PENDING_STATUS_ID');
 
+                $paymentModule = Module::getInstanceByName($this->module->name);
+                if ($paymentModule instanceof PaymentModule) {
+                    $paymentModule->validateOrder($cart->id, (int) $order_status_id, $total, $this->module->displayName, null, [], (int) $cart->id_currency, false, $customer->secure_key);
+                }
+
                 $history = new OrderHistory();
                 $history->id_order = (int)$order_id;
                 $history->changeIdOrderState($order_status_id, (int)$order_id);
