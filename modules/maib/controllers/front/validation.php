@@ -73,7 +73,7 @@ class MaibValidationModuleFrontController extends ModuleFrontController
 
         $delivery = (float) number_format($cart->getTotalShippingCost(null, false), 2, ".", "");
 
-        $order_id = $this->getOrderLastIncrementId();
+        $order_id = (string) $cart->id;
 
         $params = [
             "amount" => $total,
@@ -129,17 +129,6 @@ class MaibValidationModuleFrontController extends ModuleFrontController
 
             Tools::redirect('index.php?controller=order&step=1');
         }
-    }
-
-    public function getOrderLastIncrementId()
-    {
-        $query = new DbQuery();
-        $query->select('MAX(`id_order`)');
-        $query->from('orders');
-
-        $order_id = Db::getInstance()->getValue($query);
-
-        return $order_id + 1;
     }
 
     public function getClientIp()
