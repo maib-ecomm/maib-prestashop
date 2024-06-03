@@ -15,15 +15,9 @@ class MaibOkModuleFrontController extends ModuleFrontController {
             $cart = $this->context->cart;
             $customer = new Customer($cart->id_customer);
             $order_info = new Order($orderId);
-            $total = (float) $cart->getOrderTotal(true, Cart::BOTH);
 
             if ($order_info) {
-                $paymentModule = Module::getInstanceByName($this->module->name);
-                if ($paymentModule instanceof PaymentModule) {
-                    $paymentModule->validateOrder($cart->id, (int) Configuration::get('PAYMENT_MAIB_ORDER_PENDING_STATUS_ID'), $total, $this->module->displayName, null, [], (int) $cart->id_currency, false, $customer->secure_key);
-                }
-
-                Tools::redirect('index.php?controller=order-confirmation&id_cart=' . (int) $cart->id . '&id_module=' . (int) $this->module->id . '&id_order=' . $orderId . '&key=' . $customer->secure_key);
+                Tools::redirect('index.php?controller=order-confirmation&id_cart=' . (int) $order_info->id_cart . '&id_module=' . (int) $this->module->id . '&id_order=' . $orderId . '&key=' . $customer->secure_key);
             } else {
                 PrestaShopLogger::addLog(
                     'Ok URL: Order not found.',
