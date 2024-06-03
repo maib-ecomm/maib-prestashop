@@ -54,7 +54,7 @@ class MaibValidationModuleFrontController extends ModuleFrontController
             $description[] = $cart_product["quantity"] . " x " . $cart_product["name"];
 
             $product_items[] = [
-                "id" => $cart_product["id_product"],
+                "id" => (string) $cart_product["id_product"],
                 "name" => $cart_product["name"],
                 "price" => $cart_product["price"],
                 "quantity" => (float) number_format(
