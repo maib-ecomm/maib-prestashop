@@ -73,7 +73,7 @@ class MaibValidationModuleFrontController extends ModuleFrontController
 
         $delivery = (float) number_format($cart->getTotalShippingCost(null, false), 2, ".", "");
 
-        $order_id = (string) $cart->id;
+        $order_id = (string) $this->getOrderLastIncrementId();
 
         $params = [
             "amount" => $total,
@@ -119,11 +119,6 @@ class MaibValidationModuleFrontController extends ModuleFrontController
                     $paymentModule->validateOrder($cart->id, (int) $order_status_id, $total, $this->module->displayName, null, [], (int) $cart->id_currency, false, $customer->secure_key);
                 }
 
-                $history = new OrderHistory();
-                $history->id_order = (int)$order_id;
-                $history->changeIdOrderState($order_status_id, (int)$order_id);
-                $history->addWithemail();
-
                 Tools::redirect($response->payUrl);
             }
         } catch (Exception $ex) {
@@ -139,6 +134,7 @@ class MaibValidationModuleFrontController extends ModuleFrontController
     public function getClientIp()
     {
         $ipAddress = '';
+
         if (isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ipAddress = $_SERVER['HTTP_CLIENT_IP'];
         } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -154,6 +150,18 @@ class MaibValidationModuleFrontController extends ModuleFrontController
         } else {
             $ipAddress = '127.0.0.1';
         }
+
         return $ipAddress;
-        }
+    }
+
+    public function getOrderLastIncrementId()
+    {
+        $query = new DbQuery();
+        $query->select('MAX(`id_order`)');
+        $query->from('orders');
+
+        $order_id = Db::getInstance()->getValue($query);
+
+        return $order_id + 1;
+    }
 }
