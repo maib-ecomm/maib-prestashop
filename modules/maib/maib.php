@@ -363,14 +363,11 @@ class Maib extends PaymentModule
 
         $orderId = $params['id_order'];
 
-        if (!$orderInfo 
-            || $orderInfo->module != $this->name 
-            || $newOrderStatusId != Configuration::get('PAYMENT_MAIB_ORDER_REFUND_STATUS_ID')
-        ) {
+        if (!$orderInfo || $newOrderStatusId != Configuration::get('PAYMENT_MAIB_ORDER_REFUND_STATUS_ID')) {
             return;
         }
 
-        $payId = $this->getTransactionId($orderInfo->reference);
+        $payId = $this->getTransactionId($orderId);
 
         PrestaShopLogger::addLog(
             'Initiate Refund Payment Request to maib API, pay_id: ' . $payId . ', order_id: ' . $orderId,
@@ -379,50 +376,43 @@ class Maib extends PaymentModule
 
         $params = ['payId' => strval($payId)];
 
-        try {
-			// Initiate Refund Payment Request to maib API
-			$response = MaibApiRequest::create()->refund(
-				$params,
-				$this->getAccessToken()
-			);
+        // Initiate Refund Payment Request to maib API
+        $response = MaibApiRequest::create()->refund(
+            $params,
+            $this->getAccessToken()
+        );
 
+        PrestaShopLogger::addLog(
+            'Response from refund endpoint: ' . json_encode($response, JSON_PRETTY_PRINT) . ', order_id: ' . $orderId,
+            1
+        );
+
+        if ($response && $response->status === "OK") {
             PrestaShopLogger::addLog(
-                'Response from refund endpoint: ' . json_encode($response, JSON_PRETTY_PRINT) . ', order_id: ' . $orderId,
+                'Full refunded payment ' . $payId . ' for order ' . $orderId,
                 1
             );
-
-			if ($response && $response->status === "OK") {
-                PrestaShopLogger::addLog(
-                    'Full refunded payment ' . $payId . ' for order ' . $orderId,
-                    1
-                );
-                
-                $history = new OrderHistory();
-                $history->id_order = (int)$orderId;
-                $history->changeIdOrderState($newOrderStatusId, (int)$orderId);
-                $history->addWithemail();
-			} else if ($response && $response->status === "REVERSED") {
-                PrestaShopLogger::addLog(
-                    'Already refunded payment ' . $payId . ' for order ' . $orderId,
-                    1
-                );
-			} else {
-                PrestaShopLogger::addLog(
-                    'Failed refund payment ' . $payId . ' for order ' . $orderId,
-                    3
-                );
-			}
-		} catch (Exception $e) {
+            
+            $history = new OrderHistory();
+            $history->id_order = (int)$orderId;
+            $history->changeIdOrderState($newOrderStatusId, (int)$orderId);
+            $history->addWithemail();
+        } else if ($response && $response->status === "REVERSED") {
+            PrestaShopLogger::addLog(
+                'Already refunded payment ' . $payId . ' for order ' . $orderId,
+                1
+            );
+        } else {
             PrestaShopLogger::addLog(
                 'Failed refund payment ' . $payId . ' for order ' . $orderId,
                 3
             );
-		}
+        }
     }
 
-    public function getTransactionId(string $reference)
+    public function getTransactionId(int $reference)
     {
-        if ($reference === '') {
+        if ($reference === 0) {
             return;
         }
 
