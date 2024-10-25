@@ -103,6 +103,15 @@ class MaibCallbackModuleFrontController extends ModuleFrontController {
             $history->id_order = (int)$order_id;
             $history->changeIdOrderState($order_status_id, (int)$order_id);
             $history->addWithemail();
+
+            $order_payments = OrderPayment::getByOrderReference($order_info->reference);
+
+            if (!empty($order_payments)) {
+                foreach ($order_payments as $order_payment) {
+                    $order_payment->transaction_id = $pay_id;
+                    $order_payment->update();
+                }
+            }
         } else {
             // Payment failure logic
             $order_status_id = Configuration::get('PAYMENT_MAIB_ORDER_FAIL_STATUS_ID');
